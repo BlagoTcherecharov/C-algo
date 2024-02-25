@@ -2,7 +2,7 @@
 
 using namespace std;
 
-void main()
+int main()
 {
 	const int SIZE = 10;
 
