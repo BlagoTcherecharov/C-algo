@@ -16,7 +16,9 @@ int* Max(int array[], int SIZE)
 		}
 	}
 
-	int result[2] = { temp, position };
+	int* result = new int[2];
+	result[0] = temp;
+	result[1] = position;
 
 	return result;
 }
@@ -35,20 +37,24 @@ int* Min(int array[], int SIZE)
 		}
 
 	}
-	int result[2] = { temp, position };
+	int* result = new int[2];
+	result[0] = temp;
+	result[1] = position;
 
-	return result;
+	return result; 
 }
 
-void main()
+int main()
 {
 	const int SIZE = 10;
 
 	int array[SIZE] = { 7, 5, 2, 3, 4, 5, 6, 7, 8, 9 };
 
-	int*min = Min(array, SIZE);
-	int*max = Max(array, SIZE);
+	int* min = Min(array, SIZE); 
+	int* max = Max(array, SIZE); 
 
 	cout << "Min is " << *min << " at position " << *(min + 1) + 1 << endl;
 	cout << "Max is " << *max << " at position " << *(max + 1) + 1 << endl;
+
+	return 0;
 }
