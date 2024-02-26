@@ -33,11 +33,13 @@ int lastRow(int N, int depth)
     return rest;
 }
 
-void buildPyramid(int array[], int depth, int N) 
+void showPyramid(int array[], int depth, int N) 
 {
     int index = 0;
-    for (int i = 1; i <= depth; i++) {
-        for (int j = 0; j < i; j++) {
+    for (int i = 1; i <= depth; i++) 
+    {
+        for (int j = 0; j < i; j++) 
+        {
             cout << array[index++] << " ";
             if(index >= N)
                 break;
@@ -71,7 +73,7 @@ int main() {
     cout << "Depth of pyramid: " << depth << endl;
     
     cout << "Pyramid:" << endl;
-    buildPyramid(array, depth, N);
+    showPyramid(array, depth, N);
 
     int rest = 0;
     cout << "Leaves:" << endl;
