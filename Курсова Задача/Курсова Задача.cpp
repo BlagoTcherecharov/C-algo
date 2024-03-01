@@ -3,6 +3,45 @@
 
 using namespace std;
 
+void swap(int& a, int& b) 
+{
+    int temp = a;
+    a = b;
+    b = temp;
+}
+
+void heapify(int array[], int n, int i) 
+{
+    int largest = i;
+    int left = 2 * i + 1;
+    int right = 2 * i + 2;
+
+    if (left < n && array[left] > array[largest])
+        largest = left;
+
+    if (right < n && array[right] > array[largest])
+        largest = right;
+
+    if (largest != i) 
+    {
+        swap(array[i], array[largest]);
+        heapify(array, n, largest);
+    }
+}
+
+void heapsort(int array[], int n) 
+{
+    for (int i = n / 2 - 1; i >= 0; i--)
+        heapify(array, n, i);
+
+    for (int i = n - 1; i >= 0; i--) {
+        swap(array[0], array[i]);
+
+        heapify(array, i, 0);
+    }
+}
+
+
 int findDepth(int N, int ans) 
 {
     if(N == 0)
@@ -57,7 +96,8 @@ void findLeaves(int array[], int N, int depth)
     }
 }
 
-int main() {
+int main() 
+{
     int N, ans = 1;
     cout << "Enter the number of elements in the array: ";
     cin >> N;
@@ -68,6 +108,8 @@ int main() {
     {
         array[i] = rand() % 100; 
     }
+
+    heapsort(array, N); 
 
     int depth = findDepth(N, ans);
     cout << "Depth of pyramid: " << depth << endl;
