@@ -1,5 +1,6 @@
 #include <iostream>
 #include <ctime>
+#include <cmath>
 
 using namespace std;
 
@@ -10,34 +11,34 @@ void swap(int& a, int& b)
     b = temp;
 }
 
-void heapify(int array[], int n, int i) 
+void heapify(int arr[], int N, int i)
 {
     int largest = i;
-    int left = 2 * i + 1;
-    int right = 2 * i + 2;
+    int l = 2 * i + 1;
+    int r = 2 * i + 2;
 
-    if (left < n && array[left] > array[largest])
-        largest = left;
+    if (l < N && arr[l] > arr[largest])
+        largest = l;
 
-    if (right < n && array[right] > array[largest])
-        largest = right;
+    if (r < N && arr[r] > arr[largest])
+        largest = r;
 
     if (largest != i) 
     {
-        swap(array[i], array[largest]);
-        heapify(array, n, largest);
+        swap(arr[i], arr[largest]);
+        heapify(arr, N, largest);
     }
 }
 
-void heapsort(int array[], int n) 
+void heapsort(int arr[], int N)
 {
-    for (int i = n / 2 - 1; i >= 0; i--)
-        heapify(array, n, i);
+    for (int i = N / 2 - 1; i >= 0; i--)
+        heapify(arr, N, i);
 
-    for (int i = n - 1; i >= 0; i--) {
-        swap(array[0], array[i]);
-
-        heapify(array, i, 0);
+    for (int i = N - 1; i > 0; i--) 
+    {
+        swap(arr[0], arr[i]);
+        heapify(arr, i, 0);
     }
 }
 
@@ -56,7 +57,7 @@ int findDepth(int N, int ans)
     {
         N-=ans;
         ans++;
-        findDepth(N, ans);
+        return findDepth(N, ans);
     }
 }
 
@@ -86,7 +87,34 @@ void showPyramid(int array[], int depth, int N)
         cout << endl;
     }
 }
- 
+
+/*
+void showPyramid(int array[], int depth, int N) 
+{
+    int index = 0;
+    int maxWidth = pow(2, depth - 1);
+    
+    for (int i = 1; i <= depth; i++) 
+    {
+        int numElements = pow(2, i - 1);
+        
+        int spaces = (maxWidth - numElements) / 2;
+        
+        for (int s = 0; s < spaces; s++)
+            cout << " "; 
+        
+        for (int j = 0; j < numElements; j++) 
+        {
+            if(index < N)
+            {
+                cout << array[index++] << " ";
+            }
+        }
+        
+        cout << endl;
+    }
+}
+*/
 void findLeaves(int array[], int N, int depth) 
 {
     int rest = lastRow(N, depth);
