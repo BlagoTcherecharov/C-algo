@@ -78,12 +78,7 @@ int main()
         array[i] = rand() % 100; 
     }
 
-    heapsort(array, N); 
-    
-    for (int i = 0; i < N; i++) 
-    {
-        cout << array[i] << endl; 
-    }
+    heapsort(array, N);
 
     int depth = findDepth(N);
     cout << "Depth of pyramid: " << depth << endl;
