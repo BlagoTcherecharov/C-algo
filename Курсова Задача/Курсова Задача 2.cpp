@@ -65,6 +65,12 @@ int findDepth(int N)
     return sqrt(N);
 }
 
+void findLeaves(int array[], int depth, int N)
+{
+    for(int i = pow(2, depth) - 1; i < N; i++)
+        cout << array[i] << " ";
+}
+
 int main() 
 {
     int N;
@@ -85,6 +91,9 @@ int main()
     
     cout << "Pyramid:" << endl;
     showPyramid(array, depth, N);
+    
+    cout << "Leaves:" << endl;
+    findLeaves(array, depth, N);
     
     return 0;
 }
