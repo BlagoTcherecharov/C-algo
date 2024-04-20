@@ -60,9 +60,16 @@ void showPyramid(int array[], int depth, int N)
 
 int findDepth(int N) 
 {
-    if(N == 1)
+    if (N == 1)
         return 0;
-    return sqrt(N);
+        
+    int sum = 0, depth = 0;
+    while (sum + pow(2, depth) <= N) {
+        sum += pow(2, depth);
+        depth++;
+    }
+    
+    return depth;
 }
 
 void findLeaves(int array[], int depth, int N)
