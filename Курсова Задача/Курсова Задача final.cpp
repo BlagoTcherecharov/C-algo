@@ -36,11 +36,14 @@ void heapsort(int arr[], int N)
         heapify(arr, N, i);
 }
 
+//Print pyramid
 void showPyramid(int array[], int depth, int N) 
 {
     int index = 0;
+    //Cycle for number of rows
     for (int i = 0; i < depth + 1; i++) 
     {
+        //Cycle for number of columns for each row
         for (int j = 0; j < pow(2, i); j++) 
         {
             if(index >= N)
@@ -52,6 +55,7 @@ void showPyramid(int array[], int depth, int N)
     }
 }
 
+//Depth of pyramid using the number of elements in the array
 int findDepth(int N) 
 {
     if (N == 1)
@@ -66,6 +70,7 @@ int findDepth(int N)
     return depth;
 }
 
+//Function to find the leaves(elements that dont have a child)
 void findLeaves(int array[], int depth, int N)
 {
     int sum = 0, counter = 0;
@@ -73,11 +78,14 @@ void findLeaves(int array[], int depth, int N)
         sum += pow(2, counter);
         counter++;
     }
-    
+
+    //Finding last row because elements are leaves
     int last_row = N - sum;
-    
+
+    //Finding leaves by knowing number of elements in the last row
     int i = pow(2, depth - 1) - 1 + ceil((double)last_row / 2);
-    
+
+    //Start printing from 1st leaf
     for(; i < N; i++)
         cout << array[i] << " ";
 }
@@ -90,11 +98,14 @@ int main()
     
     int array[N];
     srand (time(NULL));
+
+    //Adding random numbers from 1-100 in the array
     for (int i = 0; i < N; i++) 
     {
-        array[i] = rand() % 100; 
+        array[i] = rand() % 100 + 1; 
     }
 
+    //Calling function to sort the array as a pyramid
     heapsort(array, N);
 
     int depth = findDepth(N);
