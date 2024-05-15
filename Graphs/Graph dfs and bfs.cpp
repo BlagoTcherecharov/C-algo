@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cstring>
 
 using namespace std;
 
@@ -146,12 +147,13 @@ void del_arc(link* gr[n], char c1, char c2)
     }
     else { cout << "\nGraph doesn't have that arc!"; }
 }
+
+
 /*
 void bfs(link* gr[n], char k)
 {
     int m[n]; // масив за регистриране на обходените върхове
- // memset(m, 0, 10);
-    for (int i = 0; i < n; i++) m[i] = 0;
+    memset(m, 0, 10);
     init_que(); //инициализация на помощната опашка
     push_queue(k); //поместване в опашка на първия елемент
     while (!empty_queue()) //докато опашката не е празна
@@ -173,10 +175,23 @@ void bfs(link* gr[n], char k)
         }
     }
 }
+*/
+
+int convert(link* gr[n], char k)
+{
+    for(int i = 0; i < n; i++)
+    {
+        if(gr[i]->key == k)
+            return i;
+    }
+    
+    return -1;
+}
+
 // функция реализираща обхождане в дълбочина
 void dfs(link* gr[n], char k, int m[])
 {
-    cout << k <<" ";
+    cout << k << " ";
     int j = convert(gr, k);
     m[j] = 1;
     for (link* t = gr[j]->next; t != NULL; t = t->next)
@@ -186,10 +201,12 @@ void dfs(link* gr[n], char k, int m[])
             dfs(gr, t->key, m);
     }
 }
-*/
+
 int main()
 {
     link* gr[n];
+    int m[n];
+    memset(m, 0, n);
     
     init(gr);
     
@@ -208,4 +225,6 @@ int main()
     add_arc(gr, a, c);
     add_arc(gr, b, d);
     add_arc(gr, c, d);
+    
+    dfs(gr, a, m);
 }
