@@ -5,6 +5,7 @@ using namespace std;
 
 const int n = 4;
 
+
 struct link
 {
     char key;
@@ -99,7 +100,7 @@ void del_node(link* gr[n], char c)
         int i = 0;
         while (gr[i]->key != c) ;
             i++;
-        link* p;
+        link *p;
         link *q=gr[i];
         while (gr[i] != NULL)
         {
@@ -148,12 +149,65 @@ void del_arc(link* gr[n], char c1, char c2)
     else { cout << "\nGraph doesn't have that arc!"; }
 }
 
+struct elem
+{
+    char key;
+    elem *next;
+}*first, *last;
 
-/*
+void init_que()
+{
+    first = NULL;
+    last = NULL;
+}
+
+void push_queue(char k)
+{
+    elem* p = last;
+	last = new elem;
+	last->key = k;
+	last->next = NULL;
+	if (p != NULL) p->next = last;
+	if (first == NULL)
+	{
+		first = last;
+	}
+}
+
+char pop_queue()
+{
+	char s = first->key;
+	elem* p = first;
+	first = first->next;
+	delete p;
+	return s;
+	
+}
+
+bool empty_queue()
+{
+    if (first == NULL)
+        return false;
+    else
+        return true;
+}
+
+int convert(link* gr[n], char k)
+{
+    for(int i = 0; i < n; i++)
+    {
+        if(gr[i]->key == k)
+            return i;
+    }
+    
+    return -1;
+}
+
 void bfs(link* gr[n], char k)
 {
     int m[n]; // масив за регистриране на обходените върхове
-    memset(m, 0, 10);
+    for(int i = 0; i < n; i++)
+        m[i] = 0;
     init_que(); //инициализация на помощната опашка
     push_queue(k); //поместване в опашка на първия елемент
     while (!empty_queue()) //докато опашката не е празна
@@ -175,23 +229,14 @@ void bfs(link* gr[n], char k)
         }
     }
 }
-*/
 
-int convert(link* gr[n], char k)
-{
-    for(int i = 0; i < n; i++)
-    {
-        if(gr[i]->key == k)
-            return i;
-    }
-    
-    return -1;
-}
+
 
 // функция реализираща обхождане в дълбочина
 void dfs(link* gr[n], char k, int m[])
 {
     cout << k << " ";
+    
     int j = convert(gr, k);
     m[j] = 1;
     for (link* t = gr[j]->next; t != NULL; t = t->next)
@@ -206,7 +251,6 @@ int main()
 {
     link* gr[n];
     int m[n];
-    memset(m, 0, n);
     
     init(gr);
     
@@ -226,5 +270,11 @@ int main()
     add_arc(gr, b, d);
     add_arc(gr, c, d);
     
+    bfs(gr, a);
+    
+    cout << endl;
+    
+    for(int i = 0; i < n; i++)
+        m[i] = 0;
     dfs(gr, a, m);
 }
