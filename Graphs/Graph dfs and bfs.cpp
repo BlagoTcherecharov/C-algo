@@ -22,15 +22,13 @@ int search_node(link* gr[n], char c)
 {
     int flag = 0;
     for (int i = 0; i < n; i++)
-    if (gr[i])
-        if (gr[i]->key==c)
-            flag = 1;
+        if (gr[i])
+            if (gr[i]->key == c)
+                flag = 1;
     return flag;
 }
 
 int search_arc(link* gr[5], char c1, char c2)
-//c1 и c2 - ключовите стойности на възлите, които
-//свързва търсената дъга
 {
     int flag = 0;
     if (search_node(gr, c1) && search_node(gr, c2))
@@ -47,7 +45,7 @@ int search_arc(link* gr[5], char c1, char c2)
     return flag;
 }
 
-void add_node(link* gr[n], char c) // c е добавената стойност
+void add_node(link* gr[n], char c)
 {
     if (search_node(gr, c))
     {
@@ -86,49 +84,56 @@ void add_arc(link* gr[n], char c1, char c2)
             add_node(gr, c2);
         while (gr[i]->key != c1)
             i++;
-        p = new link; 
-        p->key = c2; 
+        p = new link;
+        p->key = c2;
         p->next = gr[i]->next;
         gr[i]->next = p;
     }
 }
 
-void del_node(link* gr[n], char c)
+void del_node(link* gr[], char c)
 {
     if (search_node(gr, c))
     {
         int i = 0;
-        while (gr[i]->key != c) ;
+        while (gr[i] && gr[i]->key != c)
             i++;
-        link *p;
-        link *q=gr[i];
-        while (gr[i] != NULL)
+
+        if (gr[i])
         {
-            p = gr[i];
+            link* p = gr[i];
             gr[i] = p->next;
             delete p;
         }
-        
-        for (i=0;i<n;i++)
+
+        for (i = 0; i < n; i++)
         {
             if (gr[i])
             {
-                p = gr[i];
-                while ((p->key != c) && (p->next != NULL))
+                link* p = gr[i];
+                link* q = nullptr;
+                while (p && p->key != c)
                 {
                     q = p;
                     p = p->next;
                 }
-            }
-            if (p->key == c)
-            {
-                q->next = p->next;
-                delete p;
+                if (p)
+                {
+                    if (q)
+                        q->next = p->next;
+                    else
+                        gr[i] = p->next;
+                    delete p;
+                }
             }
         }
     }
-    else { cout << "Graph doesn't have that node!"; }
+    else
+    {
+        cout << "This node doesn't exist!";
+    }
 }
+
 
 void del_arc(link* gr[n], char c1, char c2)
 {
@@ -137,7 +142,7 @@ void del_arc(link* gr[n], char c1, char c2)
         int i = 0;
         while (gr[i]->key != c1)
             i++;
-        link* p = gr[i], * q=gr[i];
+        link* p = gr[i], * q = gr[i];
         while (p->key != c2)
         {
             q = p;
@@ -152,8 +157,8 @@ void del_arc(link* gr[n], char c1, char c2)
 struct elem
 {
     char key;
-    elem *next;
-}*first, *last;
+    elem* next;
+}*first, * last;
 
 void init_que()
 {
@@ -164,85 +169,81 @@ void init_que()
 void push_queue(char k)
 {
     elem* p = last;
-	last = new elem;
-	last->key = k;
-	last->next = NULL;
-	if (p != NULL) p->next = last;
-	if (first == NULL)
-	{
-		first = last;
-	}
+    last = new elem;
+    last->key = k;
+    last->next = NULL;
+    if (p != NULL) p->next = last;
+    if (first == NULL)
+    {
+        first = last;
+    }
 }
 
 char pop_queue()
 {
-	char s = first->key;
-	elem* p = first;
-	first = first->next;
-	delete p;
-	return s;
-	
+    char s = first->key;
+    elem* p = first;
+    first = first->next;
+    delete p;
+    return s;
+
 }
 
 bool empty_queue()
 {
     if (first == NULL)
-        return false;
-    else
         return true;
+    else
+        return false;
 }
 
 int convert(link* gr[n], char k)
 {
-    for(int i = 0; i < n; i++)
+    for (int i = 0; i < n; i++)
     {
-        if(gr[i]->key == k)
+        if (gr[i]->key == k)
             return i;
     }
-    
+
     return -1;
 }
 
 void bfs(link* gr[n], char k)
 {
-    int m[n]; // масив за регистриране на обходените върхове
-    for(int i = 0; i < n; i++)
+    int m[n]; 
+    for (int i = 0; i < n; i++)
         m[i] = 0;
-    init_que(); //инициализация на помощната опашка
-    push_queue(k); //поместване в опашка на първия елемент
-    while (!empty_queue()) //докато опашката не е празна
+    init_que();
+    push_queue(k); 
+    while (!empty_queue()) 
     {
- // cout << "------------------";
-        char s = pop_queue(); //извличане на поредния елемент от опашката
-        int j = convert(gr,s); //функция, която връща индекса на елемента на масива от списъците на съседство, чиято стойност е k.
-        if (m[j] == 0) //Възелът не е посетен
+        char s = pop_queue();
+        int j = convert(gr, s);
+        if (m[j] == 0)
         {
             m[j] = 1;
-            cout << s << " ";//регистриране и визуализация на възела
- //cout << "---------";
+            cout << s << " ";
         }
         for (link* t = gr[j]; t != NULL; t = t->next)
         {
             int h = convert(gr, t->key);
-            if (m[h] == 0) // възела не е посетен
-            push_queue(t->key); // включване на възела в опашката
+            if (m[h] == 0)
+                push_queue(t->key);
         }
     }
 }
 
 
-
-// функция реализираща обхождане в дълбочина
 void dfs(link* gr[n], char k, int m[])
 {
     cout << k << " ";
-    
+
     int j = convert(gr, k);
     m[j] = 1;
     for (link* t = gr[j]->next; t != NULL; t = t->next)
     {
         int h = convert(gr, t->key);
-        if (m[h]==0)
+        if (m[h] == 0)
             dfs(gr, t->key, m);
     }
 }
@@ -251,30 +252,30 @@ int main()
 {
     link* gr[n];
     int m[n];
-    
+
     init(gr);
-    
+
     char a = 'A';
     char b = 'B';
     char c = 'C';
     char d = 'D';
-    
-    
+
+
     add_node(gr, a);
     add_node(gr, b);
     add_node(gr, c);
     add_node(gr, d);
-    
+
     add_arc(gr, a, b);
     add_arc(gr, a, c);
     add_arc(gr, b, d);
     add_arc(gr, c, d);
-    
+
     bfs(gr, a);
-    
+
     cout << endl;
-    
-    for(int i = 0; i < n; i++)
+
+    for (int i = 0; i < n; i++)
         m[i] = 0;
     dfs(gr, a, m);
 }
